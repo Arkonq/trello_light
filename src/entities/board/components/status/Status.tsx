@@ -1,22 +1,30 @@
-import { Card, Divider, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  Divider,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { type FC, useState } from "react";
 import type { StatusVM } from "../../model";
 import Task from "../task/Task";
 import AddButton from "../AddButton.tsx";
+import { DeleteOutlined } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import {
+  addTask,
+  deleteStatus,
+  updateStatus,
+} from "../../../../app/store/slices/appSlice.ts";
 
 interface StatusProps {
   status: StatusVM;
   index: number;
-  handleAddTask: (name: string, index: number) => void;
-  handleUpdateStatus: (name: string, index: number) => void;
 }
 
-const Status: FC<StatusProps> = ({
-  status,
-  index,
-  handleAddTask,
-  handleUpdateStatus,
-}) => {
+const Status: FC<StatusProps> = ({ status, index }) => {
+  const dispatch = useDispatch();
   const [isEditName, setIsEditName] = useState(false);
   const [name, setName] = useState("");
 
@@ -40,6 +48,18 @@ const Status: FC<StatusProps> = ({
     setName(status.name);
   };
 
+  const handleUpdateStatus = (name: string, index: number) => {
+    dispatch(updateStatus({ name, index }));
+  };
+
+  const handleDeleteStatus = () => {
+    dispatch(deleteStatus({ index }));
+  };
+
+  const handleAddTask = (name: string) => {
+    dispatch(addTask({ name, index }));
+  };
+
   return (
     <Card sx={statusStyle}>
       {isEditName ? (
@@ -53,18 +73,20 @@ const Status: FC<StatusProps> = ({
           onKeyDown={handleKeyDown}
         />
       ) : (
-        <Typography variant={"h5"} align={"left"} onClick={handleNameClick}>
-          {status.name}
-        </Typography>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant={"h5"} align={"left"} onClick={handleNameClick}>
+            {status.name}
+          </Typography>
+          <Button onClick={handleDeleteStatus}>
+            <DeleteOutlined />
+          </Button>
+        </Box>
       )}
       <Divider />
       {status.tasks.map((task, index) => (
         <Task task={task} key={index} />
       ))}
-      <AddButton
-        title={"Add task"}
-        handleAdd={(name) => handleAddTask(name, index)}
-      />
+      <AddButton title={"Add task"} handleAdd={handleAddTask} />
     </Card>
   );
 };
