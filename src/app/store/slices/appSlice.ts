@@ -1,62 +1,66 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import type { BoardVM } from "../../../entities/board/model.ts";
+import type { BoardVM, StatusVM } from "../../../entities/board/model.ts";
 
 interface AppState {
-  board: BoardVM;
+  currentBoard: BoardVM | null;
 }
 
 const initialState: AppState = {
-  board: {
-    name: "boardName",
-    statuses: [
-      {
-        name: "statusName",
-        tasks: [{ name: "taskName", description: "taskDesc" }],
-      },
-    ],
-  },
+  currentBoard: null,
 };
 
 const appSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
-    addStatus: (state, action: PayloadAction<{ name: string }>) => {
-      state.board = {
-        ...state.board,
-        statuses: state.board.statuses.concat({
-          name: action.payload.name,
-          tasks: [],
-        }),
-      };
+    setBoard: (state, action: PayloadAction<BoardVM>) => {
+      state.currentBoard = action.payload;
     },
-    updateStatus: (
-      state,
-      action: PayloadAction<{ name: string; index: number }>,
-    ) => {
-      state.board.statuses[action.payload.index].name = action.payload.name;
+    setStatuses: (state, action: PayloadAction<StatusVM[]>) => {
+      if (!state.currentBoard) return;
+
+      state.currentBoard.statuses = action.payload;
     },
-    deleteStatus: (state, action: PayloadAction<{ index: number }>) => {
-      state.board.statuses.splice(action.payload.index, 1);
-    },
-    addTask: (
-      state,
-      action: PayloadAction<{ name: string; index: number }>,
-    ) => {
-      state.board.statuses[action.payload.index].tasks = state.board.statuses[
-        action.payload.index
-      ].tasks.concat({
-        name: action.payload.name,
-        description: "newTaskDesc",
-      });
-    },
+    // addStatus: (state, action: PayloadAction<{ name: string }>) => {
+    //   if (state.currentBoardId === null) return;
+    //
+    //   let statuses = state.currentBoards.find(
+    //     ({ id }) => id === state.currentBoardId,
+    //   )?.statuses;
+    //
+    //   if (!statuses) return;
+    //
+    //   statuses = statuses.concat({
+    //     name: action.payload.name,
+    //     tasks: [],
+    //   });
+    // },
+    // updateStatus: (
+    //   state,
+    //   action: PayloadAction<{ name: string; index: number }>,
+    // ) => {
+    //   state.currentBoard.statuses[action.payload.index].name =
+    //     action.payload.name;
+    // },
+    // deleteStatus: (state, action: PayloadAction<{ index: number }>) => {
+    //   state.currentBoard.statuses.splice(action.payload.index, 1);
+    // },
+    // addTask: (
+    //   state,
+    //   action: PayloadAction<{ name: string; index: number }>,
+    // ) => {
+    //   state.currentBoard.statuses[action.payload.index].tasks =
+    //     state.currentBoard.statuses[action.payload.index].tasks.concat({
+    //       name: action.payload.name,
+    //       description: "newTaskDesc",
+    //     });
+    // },
   },
 });
 
-export const { addStatus, updateStatus, addTask, deleteStatus } =
-  appSlice.actions;
+export const { setBoard, setStatuses } = appSlice.actions;
 
-export const selectBoard = (state: { app: AppState }) => state.app.board;
+export const selectBoard = (state: { app: AppState }) => state.app.currentBoard;
 
 export default appSlice.reducer;

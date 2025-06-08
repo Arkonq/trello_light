@@ -12,11 +12,6 @@ import Task from "../task/Task";
 import AddButton from "../AddButton.tsx";
 import { DeleteOutlined } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
-import {
-  addTask,
-  deleteStatus,
-  updateStatus,
-} from "../../../../app/store/slices/appSlice.ts";
 
 interface StatusProps {
   status: StatusVM;
@@ -49,15 +44,15 @@ const Status: FC<StatusProps> = ({ status, index }) => {
   };
 
   const handleUpdateStatus = (name: string, index: number) => {
-    dispatch(updateStatus({ name, index }));
+    // dispatch(updateStatus({ name, index }));
   };
 
   const handleDeleteStatus = () => {
-    dispatch(deleteStatus({ index }));
+    // dispatch(deleteStatus({ index }));
   };
 
   const handleAddTask = (name: string) => {
-    dispatch(addTask({ name, index }));
+    // dispatch(addTask({ name, index }));
   };
 
   return (

@@ -3,7 +3,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import appReducer from "./slices/appSlice";
 import authReducer from "./slices/authSlice";
-import { mainApi } from "../../shared/api";
+import { mainApi } from "../api/mainApi.ts";
 
 // Определение типа RootState
 export type RootState = ReturnType<typeof store.getState>;

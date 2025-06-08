@@ -1,0 +1,16 @@
+{
+  "boards": [
+    {      "id": "1",     "name": "board 1"    },
+    {      "id": "2",     "name": "board 2"    },
+    {      "id": "282d",     "name": "board test123"    }
+  ], "statuses": [
+    {      "id": "1",     "name": "status 1",     "boardId": "1"    },
+    {      "id": "2",     "name": "status 2",     "boardId": "1"    },
+    {      "id": "3",     "name": "status 3",     "boardId": "2"    },
+    {      "id": "4",     "name": "status 4",     "boardId": "1"    }
+  ], "tasks": [
+    {      "id": "1",     "name": "task 1",     "description": "desc 1",     "statusId": "1"    },
+    {      "id": "2",     "name": "task 2",     "description": "desc 2",     "statusId": "1"    },
+    {      "id": "3",     "name": "task 3",     "description": "desc 3",     "statusId": "2"    }
+  ]
+}
